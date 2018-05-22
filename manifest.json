@@ -1,0 +1,20 @@
+{
+  "name": "BackSeatDriver",
+  "description": "Evade Collisions With Voice Commands",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "icons": {
+  },
+  "developer": {
+    "name": "Luke Dreyer",
+  },
+  "default_locale": "en",
+  "permissions": {
+    "audio-capture" : {
+      "description" : "Audio capture"
+    },
+    "speech-recognition" : {
+      "description" : "Speech recognition"
+    }
+  }
+}

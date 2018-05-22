@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width">
+<title>VLU</title>
+<style>
+
+.output{
+  border:1px solid #000000;
+  background-color:yellow;
+  }
+</style>
+<link rel="manifest" href="./manifest.json">
+</head>
+<body onload="startDialg()">
+<h1>Home Dialogue</h1>
+<p>Say <div class='command' id="readBackCMD">READ BACK</div> to vocalize text content</p>
+<script>
+  function startDialg(){myConversation.start();};
+  var myConversation = {
+    start : function(){
+        this.readBTN = document.querySelector('.read');
+        this.recordBTN = document.querySelector('.record')
+        this.READOUT = document.querySelector('.output');
+        this.OUTPUT = document.getElementById('output');
+        this.PREV_OUTPUT = document.getElementById('prevOutput');
+        this.COMMANDS = [
+         document.getElementById("readBackCMD").innerHTML,
+         
+      ];
+        this.updateIntvl = setInterval(updateReadout, 20);
+      },
+    clear : function() {
+    }
+};
+function updateReadout(){
+  
+    button_logic();
+
+
+};
+function button_logic(){
+
+  command_text_logic(myConversation.OUTPUT.innerHTML);
+
+  if(!myConversation.recordBTN.disabled && !myConversation.readBTN.disabled){
+    if(myConversation.OUTPUT.innerHTML.length > 0){
+      myConversation.PREV_OUTPUT.innerHTML += myConversation.OUTPUT.innerHTML + "<br />"; //add most recent output
+    }
+    
+    myConversation.recordBTN.click();
+    myConversation.disabled = true;
+    myConversation.OUTPUT.innerHTML = ""; //nullify the current output readout for next command
+  }
+
+};
+
+function command_text_logic(txt){ // a subset of the button logic
+
+  for(var k = 0; k < myConversation.COMMANDS.length; ++k)
+  if(txt.length >= myConversation.COMMANDS[k].length){
+  if(myConversation.COMMANDS[k] === txt.substring(txt.length-myConversation.COMMANDS[k].length, 
+  txt.length).toUpperCase()){
+      myConversation.recordBTN.disabled = false;
+      myConversation.readBTN.click();
+      myConversation.OUTPUT.innerHTML += " ... ";
+  }
+
+  }
+
+};
+
+</script>
+
+  <button class = "record">Record</button>
+  <button class = "read">Read</button>
+
+  <div>
+    <p class="output" id="output">...diagnostic messages</p>
+    <p class="prevOutput" id="prevOutput">...previous output</p>
+  </div>
+<script src="SpeechToTxt.js"></script>
+<script src="TxtToSpeech.js"></script>
+</body>
+</html>
